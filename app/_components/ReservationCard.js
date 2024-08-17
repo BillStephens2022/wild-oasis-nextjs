@@ -3,6 +3,11 @@ import { format, formatDistance, isPast, isToday, parseISO } from 'date-fns';
 import Image from 'next/image';
 import DeleteReservation from '@/app/_components/DeleteReservation';
 
+export const metadata = {
+  title: "Reservations"
+}
+
+
 export const formatDistanceFromNow = (dateStr) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,

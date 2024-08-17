@@ -1,5 +1,9 @@
 import { getCountries } from '@/app/_lib/data-service';
 
+export const metadata = {
+  title: "Update profile"
+}
+
 async function SelectCountry({ defaultCountry, name, id, className }) {
   const countries = await getCountries();
   const flag =
