@@ -1,4 +1,4 @@
-import { UsersIcon } from "@heroicons/react/24/solid";
+import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +11,7 @@ function CabinCard({ cabin }) {
         <Image
           src={image}
           fill
+          sizes="(min-width: 640px) 50vw, 100vw"
           alt={`Cabin ${name}`}
           className="object-cover border-r border-primary-800"
         />
