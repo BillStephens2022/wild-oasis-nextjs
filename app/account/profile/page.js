@@ -1,6 +1,10 @@
 import SelectCountry from "@/app/_components/SelectCountry";
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 
+export const metadata = {
+  title: "Profile",
+}
+
 export default function Page() {
   const nationality = "portugal";
   return (
