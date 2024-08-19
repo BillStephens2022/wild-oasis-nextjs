@@ -1,12 +1,19 @@
 import Image from "next/image";
 import abt1 from "@/public/about-1.jpg";
 import abt2 from "@/public/about-2.jpg";
+import { getCabins } from "@/app/_lib/data-service";
+
+// revalidate every 24 hours
+export const revalidate = 60 * 60 * 24;
 
 export const metadata = {
   title: "About",
 }
 
-export default function Page() {
+export default async function Page() {
+ 
+  const numCabins = await getCabins().then(cabins => cabins.length); // get number of cabins
+
   return (
     <div className="grid grid-cols-5 gap-x-24 gap-y-32 text-lg items-center">
       <div className="col-span-3">
@@ -23,7 +30,7 @@ export default function Page() {
             simple pleasures with family.
           </p>
           <p>
-            Our 8 luxury cabins provide a cozy base, but the real freedom and
+            Our {numCabins} luxury cabins provide a cozy base, but the real freedom and
             peace you&apos;ll find in the surrounding mountains. Wander through lush
             forests, breathe in the fresh air, and watch the stars twinkle above
             from the warmth of a campfire or your hot tub.
@@ -46,7 +53,7 @@ export default function Page() {
       </div>
 
       <div className="relative aspect-square col-span-2">
-        <Image src="/about-2.jpg" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" alt="Family that manages The Wild Oasis" />
+        <Image src={abt2} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" alt="Family that manages The Wild Oasis" />
       </div>
 
       <div className="col-span-3">
