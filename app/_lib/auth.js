@@ -17,13 +17,22 @@ const authConfig = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    authorized(auth, request) {
+      console.log("authorized: ", auth?.user);
+      return !!auth?.user;
+    },
     async redirect({ url, baseUrl }) {
       return baseUrl.startsWith(getNextAuthUrl()) ? baseUrl : getNextAuthUrl();
     },
   },
+  pages: {
+    signIn: "/login"
+  }
 };
 
 export const {
   auth,
+  signIn,
+  signOut,  
   handlers: { GET, POST },
 } = NextAuth(authConfig);
