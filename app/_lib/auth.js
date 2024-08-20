@@ -1,13 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-// Dynamically determine the port and set the NEXTAUTH_URL accordingly
-const getNextAuthUrl = () => {
-  const defaultPort = 3000;
-  const port = process.env.PORT || defaultPort;
-  return `http://localhost:${port}`;
-};
-
 const authConfig = {
   providers: [
     Google({
@@ -15,24 +8,19 @@ const authConfig = {
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    authorized(auth, request) {
-      console.log("authorized: ", auth?.user);
+    authorized({ auth, request }) {
       return !!auth?.user;
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl.startsWith(getNextAuthUrl()) ? baseUrl : getNextAuthUrl();
     },
   },
   pages: {
-    signIn: "/login"
-  }
+    signIn: "/login",
+  },
 };
 
 export const {
   auth,
   signIn,
-  signOut,  
+  signOut,
   handlers: { GET, POST },
 } = NextAuth(authConfig);
