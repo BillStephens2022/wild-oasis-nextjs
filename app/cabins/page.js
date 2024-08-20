@@ -2,6 +2,7 @@ import CabinsList from "@/app/_components/CabinsList";
 import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
 import Filter from "../_components/Filter";
+import ReservationReminder from "@/app/_components/ReservationReminder";
 
 // revalidate every hour
 export const revalidate = 3600;
@@ -35,6 +36,7 @@ export default async function Page({ searchParams }) {
       isn't working, when in fact it is but it may take a few seconds to refresh the data */}
       <Suspense fallback={<Spinner />} key={filter}>
         <CabinsList filter={filter} />
+        <ReservationReminder />
       </Suspense>
     </div>
   );
