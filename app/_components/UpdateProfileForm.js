@@ -6,7 +6,8 @@ import { updateGuest } from "@/app/_lib/actions";
 export default function UpdateProfileForm({ guest, children }) {
   const [count, setCount] = useState(0);
 
-  const { name: fullName, email, nationalId, countryFlag } = guest;
+  const { fullName, email, nationalId, countryFlag } = guest;
+  console.log("Country flag:", countryFlag);
 
   return (
     <form className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col" action={updateGuest}>
