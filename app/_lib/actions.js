@@ -3,7 +3,46 @@
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "@/app/_lib/auth";
 import { supabase } from "@/app/_lib/supabase";
-import { getBookings } from "./data-service";
+import { getBookings } from "@/app/_lib/data-service";
+import { redirect } from "next/navigation";
+
+export async function updateBooking(formData) {
+  console.log("formData", formData);
+  const bookingId = Number(formData.get("bookingId"));
+
+  const session = await auth();
+  if (!session)
+    throw new Error("You need to be logged in to update your reservation");
+
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingIds = guestBookings.map((booking) => booking.id);
+
+  if (!guestBookingIds.includes(bookingId)) {
+    throw new Error("You are not authorized to update this booking");
+  }
+
+  const updatedFields = {
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations").slice(0, 1000),
+  };
+
+  const { error } = await supabase
+    .from("bookings")
+    .update(updatedFields)
+    .eq("id", bookingId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be updated");
+  }
+  // cache revalidation so that UI gets updated with selected country
+  revalidatePath("/account/reservations");
+  revalidatePath(`/account/reservations/edit/${bookingId}`);
+  // redirect to reservations page after updating
+  redirect("/account/reservations");
+}
 
 export async function updateGuest(formData) {
   const session = await auth();
